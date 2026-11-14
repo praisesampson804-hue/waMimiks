@@ -209,6 +209,16 @@ Array.prototype.forEach.call($("themeSeg").children,function(b){
 var dlCap=null;
 try{ if(window.claude&&claude.use){ claude.use("downloads").then(function(d){dlCap=d}).catch(function(){}) } }catch(e){}
 $("ovX").onclick=function(){$("ov").style.display="none"};
+/* --- AD OVERLAY BUTTONS --- */
+$("adSkipBtn").onclick = function() {
+  $("adOv").style.display = "none";
+};
+
+$("adOpenBtn").onclick = function() {
+  markAdShown(); // Save the date so it doesn't show again for 7 days
+  $("adOv").style.display = "none"; // Hide the overlay
+  // The <a> tag handles opening the link in a new tab automatically
+};
 function showImg(c){$("ovImg").src=c.toDataURL("image/jpeg",0.95);$("ov").style.display="flex"}
 function doDl(){
   var btn=$("next");btn.disabled=true;btn.textContent="Making JPG…";
