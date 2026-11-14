@@ -100,7 +100,17 @@ button.sm{padding:5px 9px;font-size:13px}
 
 <div class="bar"><div class="in"><button id="back" style="display:none">← Edit</button><button class="pri" id="next">Preview →</button></div></div>
 <div class="ov" id="ov"><div>Press and hold the image to save it</div><img id="ovImg" alt="Your chat"><button id="ovX">Close</button></div>
-
+<!-- NEW AD OVERLAY -->
+<div class="ov" id="adOv" style="z-index:30">
+  <div style="font-size:22px;font-weight:700;margin-bottom:8px">Thanks for using Chat Maker! 💚</div>
+  <div style="font-size:15px;opacity:0.8;margin-bottom:20px;max-width:280px;line-height:1.4">
+    Your download has started. Please check out our sponsor to keep this tool free!
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px">
+    <a href="#" id="adOpenBtn" target="_blank" class="pri" style="text-decoration:none;display:block;text-align:center;padding:12px;font-size:16px;border-radius:10px;background:var(--ac);color:#fff;font-weight:600;border:none">Open Link</a>
+    <button id="adSkipBtn" style="padding:12px;font-size:15px;background:transparent;color:#fff;border:none;text-decoration:underline;opacity:0.7">Skip to download</button>
+  </div>
+</div>
 <script>
 /* --- START OF AD CONFIGURATION --- */
 var AD_URL = "https://your-link-here.com"; // <-- PUT YOUR AD LINK HERE
