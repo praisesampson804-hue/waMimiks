@@ -102,6 +102,38 @@ button.sm{padding:5px 9px;font-size:13px}
 <div class="ov" id="ov"><div>Press and hold the image to save it</div><img id="ovImg" alt="Your chat"><button id="ovX">Close</button></div>
 
 <script>
+/* --- START OF AD CONFIGURATION --- */
+var AD_URL = "https://your-link-here.com"; // <-- PUT YOUR AD LINK HERE
+var AD_COOLDOWN_DAYS = 7;
+var adSessionShown = false; // Prevents showing the ad more than once per session
+
+function isAdDue() {
+  // If already shown this session, don't show it again
+  if (adSessionShown) return false;
+
+  try {
+    var lastShown = localStorage.getItem("wcm_lastAd");
+    if (!lastShown) return true; // Never shown before
+
+    var now = new Date().getTime();
+    var cooldownMs = AD_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
+    
+    // If 7 days have passed, it's due
+    return (now - parseInt(lastShown, 10)) >= cooldownMs;
+  } catch (e) {
+    // If localStorage is blocked (e.g. strict private mode), 
+    // we just show it once per session.
+    return true; 
+  }
+}
+
+function markAdShown() {
+  adSessionShown = true;
+  try {
+    localStorage.setItem("wcm_lastAd", new Date().getTime().toString());
+  } catch (e) {}
+}
+/* --- END OF AD CONFIGURATION --- */
 var examples=[
  {n:"Mom ❤️",s:"online",m:[["t","Where are you?"],["m","At school"],["t","Which school?? Your school closed 3 hours ago"],["m","…"],["t","I’m coming to check"]]},
  {n:"Landlord",s:"typing…",m:[["t","Rent is due tomorrow"],["m","Noted 🙏"],["t","Is that a yes?"],["m","Noted 🙏"]]},
