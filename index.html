@@ -308,6 +308,46 @@ drawList();drawShot();
       navigator.serviceWorker.register('sw.js');
     });
   }
+
+/* --- PWA INSTALL BUTTON LOGIC --- */
+var deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  // Prevent the default mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  
+  // Show our custom install button (only if not already installed)
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    // Already installed, do nothing
+  } else {
+    document.getElementById('pwaBox').style.display = 'block';
+  }
+});
+
+document.getElementById('installBtn').addEventListener('click', function() {
+  if (deferredPrompt) {
+    // Show the native install prompt
+    deferredPrompt.prompt();
+    
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+        document.getElementById('pwaBox').style.display = 'none';
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  }
+});
+
+// Hide button if app is launched from home screen
+window.addEventListener('appinstalled', function() {
+  document.getElementById('pwaBox').style.display = 'none';
+});
 </script>
 </body>
 </html>
