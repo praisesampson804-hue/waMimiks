@@ -120,35 +120,72 @@ button.sm{padding:5px 9px;font-size:13px}
 </div>
 <script>
 /* --- START OF AD CONFIGURATION --- */
-var AD_URL = "https://wa.me/?text=Bro%2C%20this%20WhatsApp%20chat%20generator%20is%20too%20accurate%20%F0%9F%98%82%20Make%20your%20own%20fake%20chat%20here%3A%20https%3A%2F%2Fshorturl.at%2FANUzJ"; // <-- PUT YOUR AD LINK HERE
-var AD_COOLDOWN_DAYS = 7;
-var adSessionShown = false; // Prevents showing the ad more than once per session
+var AD_URL = "https://wa.me/?text=Bro%2C%20this%20WhatsApp%20chat%20generator%20is%20too%20accurate%20%F0%9F%98%82%20Make%20your%20own%20fake%20chat%20here%3A%20https%3A%2F%2Fshorturl.at%2FANUzJ";
+var adSessionShown = false; 
+
+// Helper to get a cookie
+function getCookie(name) {
+  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  if (match) return match[2];
+}
+
+// Helper to set a cookie
+function setCookie(name, value, hours) {
+  var d = new Date();
+  d.setTime(d.getTime() + (hours * 60 * 60 * 1000));
+  document.cookie = name + "=" + value + "; expires=" + d.toUTCString() + "; path=/";
+}
+
+// --- TRACK VISITS ON PAGE LOAD ---
+(function trackVisits() {
+  try {
+    var now = new Date().getTime();
+    var lastVisit = localStorage.getItem("wcm_lastVisit") || getCookie("wcm_lastVisit");
+    var visits = parseInt(localStorage.getItem("wcm_visits") || getCookie("wcm_visits") || "0", 10);
+    
+    // If it's been more than 24 hours since their last visit, reset the counter
+    if (lastVisit && (now - parseInt(lastVisit, 10)) > (24 * 60 * 60 * 1000)) {
+      visits = 0;
+    }
+    
+    // Increase visit count
+    visits++;
+    
+    // Save everything
+    try { 
+      localStorage.setItem("wcm_visits", visits); 
+      localStorage.setItem("wcm_lastVisit", now); 
+    } catch(e) {}
+    
+    setCookie("wcm_visits", visits, 24);
+    setCookie("wcm_lastVisit", now, 24);
+    
+  } catch(e) {}
+})();
 
 function isAdDue() {
-  // If already shown this session, don't show it again
   if (adSessionShown) return false;
 
   try {
-    var lastShown = localStorage.getItem("wcm_lastAd");
-    if (!lastShown) return true; // Never shown before
-
-    var now = new Date().getTime();
-    var cooldownMs = AD_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
+    var visits = parseInt(localStorage.getItem("wcm_visits") || getCookie("wcm_visits") || "0", 10);
     
-    // If 7 days have passed, it's due
-    return (now - parseInt(lastShown, 10)) >= cooldownMs;
+    // Requirement: Show if they entered MORE THAN 3 times today
+    if (visits > 3) {
+      return true;
+    }
+    
+    return false;
   } catch (e) {
-    // If localStorage is blocked (e.g. strict private mode), 
-    // we just show it once per session.
-    return true; 
+    return false; 
   }
 }
 
 function markAdShown() {
   adSessionShown = true;
-  try {
-    localStorage.setItem("wcm_lastAd", new Date().getTime().toString());
-  } catch (e) {}
+  
+  // Reset their visit count to 0 so they don't get spammed
+  try { localStorage.setItem("wcm_visits", "0"); } catch(e) {}
+  setCookie("wcm_visits", "0", 24);
 }
 /* --- END OF AD CONFIGURATION --- */
 var examples=[
