@@ -258,5 +258,12 @@ $("back").onclick=function(){go(0)};
 $("next").onclick=function(){if(cur===2)doDl();else go(2)};
 drawList();drawShot();
 </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
+</script>
 </body>
 </html>
