@@ -1,20 +1,20 @@
 {
   "name": "WhatsApp Chat Maker",
-  "short_name": "Chat Maker",
+  "short_name": "waMimiks",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#141414",
   "theme_color": "#008069",
   "icons": [
     {
-      "src": "https://i.imgur.com/your-icon-link-here.png",
+      "src": "https://www.image2url.com/r2/default/images/1794697048989-1cff91e3-ba66-480a-b066-ee1c4871f69c.jpg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jng"
     },
     {
-      "src": "https://i.imgur.com/your-icon-link-here.png",
+      "src": "https://www.image2url.com/r2/default/images/1794697048989-1cff91e3-ba66-480a-b066-ee1c4871f69c.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpg"
     }
   ]
 }
