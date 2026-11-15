@@ -1,1 +1,20 @@
-.
+{
+  "name": "WhatsApp Chat Maker",
+  "short_name": "Chat Maker",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#141414",
+  "theme_color": "#008069",
+  "icons": [
+    {
+      "src": "https://i.imgur.com/your-icon-link-here.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.imgur.com/your-icon-link-here.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
