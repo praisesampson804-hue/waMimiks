@@ -4,13 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WhatsApp Chat Maker</title>
-<link rel="manifest" href="manifest.json">
-<!-- WhatsApp & Social Media Preview Tags -->
-<meta property="og:title" content="WhatsApp Chat Maker">
-<meta property="og:description" content="Make realistic fake WhatsApp chats and prank your friends!">
-<meta property="og:image" content="https://www.image2url.com/r2/default/images/1794697048989-1cff91e3-ba66-480a-b066-ee1c4871f69c.jpg">
-<meta property="og:url" content="https://praisesampson804-hue.github.io/waMimiks/">
-<meta property="og:type" content="website">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f6f6f4;--card:#fff;--tx:#1b1b1b;--mut:#6b6b6b;--bd:#e2e2de;--ac:#128c7e;
@@ -79,13 +72,6 @@ button.sm{padding:5px 9px;font-size:13px}
   <h1>WhatsApp Chat Maker</h1>
   <div class="tabs" id="tabs"><button class="on">1 · Write</button><button>2 · Style</button><button>3 · Preview</button></div>
 
-<!-- INSTALL BUTTON -->
-<div id="pwaBox" style="display:none; margin-bottom: 12px; text-align: center;">
-  <button id="installBtn" class="pri" style="width: 100%; padding: 10px; border-radius: 10px; font-size: 15px;">
-    📲 Install waMimiks App
-  </button>
-</div>
-
   <div class="view on" id="vChat">
     <p class="sub">Type each message. Tap the badge to switch who’s talking.</p>
     <div id="list"></div>
@@ -127,72 +113,35 @@ button.sm{padding:5px 9px;font-size:13px}
 </div>
 <script>
 /* --- START OF AD CONFIGURATION --- */
-var AD_URL = "https://wa.me/?text=Bro%2C%20this%20WhatsApp%20chat%20generator%20is%20too%20accurate%20%F0%9F%98%82%20Make%20your%20own%20fake%20chat%20here%3A%20https%3A%2F%2Fshorturl.at%2FANUzJ";
-var adSessionShown = false; 
-
-// Helper to get a cookie
-function getCookie(name) {
-  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  if (match) return match[2];
-}
-
-// Helper to set a cookie
-function setCookie(name, value, hours) {
-  var d = new Date();
-  d.setTime(d.getTime() + (hours * 60 * 60 * 1000));
-  document.cookie = name + "=" + value + "; expires=" + d.toUTCString() + "; path=/";
-}
-
-// --- TRACK VISITS ON PAGE LOAD ---
-(function trackVisits() {
-  try {
-    var now = new Date().getTime();
-    var lastVisit = localStorage.getItem("wcm_lastVisit") || getCookie("wcm_lastVisit");
-    var visits = parseInt(localStorage.getItem("wcm_visits") || getCookie("wcm_visits") || "0", 10);
-    
-    // If it's been more than 24 hours since their last visit, reset the counter
-    if (lastVisit && (now - parseInt(lastVisit, 10)) > (24 * 60 * 60 * 1000)) {
-      visits = 0;
-    }
-    
-    // Increase visit count
-    visits++;
-    
-    // Save everything
-    try { 
-      localStorage.setItem("wcm_visits", visits); 
-      localStorage.setItem("wcm_lastVisit", now); 
-    } catch(e) {}
-    
-    setCookie("wcm_visits", visits, 24);
-    setCookie("wcm_lastVisit", now, 24);
-    
-  } catch(e) {}
-})();
+var AD_URL = "https://wa.me/?text=I%20use%20waMimiks%20to%20make%20meme%20or%20imitate%20whatsapp%20chats.%20Its%20really%20cool%20try%20it%20out%20https%3A%2F%2Fpraisesampson804-hue.github.io%2FwaMimiks%2F"; // <-- PUT YOUR AD LINK HERE
+var AD_COOLDOWN_DAYS = 7;
+var adSessionShown = false; // Prevents showing the ad more than once per session
 
 function isAdDue() {
+  // If already shown this session, don't show it again
   if (adSessionShown) return false;
 
   try {
-    var visits = parseInt(localStorage.getItem("wcm_visits") || getCookie("wcm_visits") || "0", 10);
+    var lastShown = localStorage.getItem("wcm_lastAd");
+    if (!lastShown) return true; // Never shown before
+
+    var now = new Date().getTime();
+    var cooldownMs = AD_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
     
-    // Requirement: Show if they entered MORE THAN 3 times today
-    if (visits > 3) {
-      return true;
-    }
-    
-    return false;
+    // If 7 days have passed, it's due
+    return (now - parseInt(lastShown, 10)) >= cooldownMs;
   } catch (e) {
-    return false; 
+    // If localStorage is blocked (e.g. strict private mode), 
+    // we just show it once per session.
+    return true; 
   }
 }
 
 function markAdShown() {
   adSessionShown = true;
-  
-  // Reset their visit count to 0 so they don't get spammed
-  try { localStorage.setItem("wcm_visits", "0"); } catch(e) {}
-  setCookie("wcm_visits", "0", 24);
+  try {
+    localStorage.setItem("wcm_lastAd", new Date().getTime().toString());
+  } catch (e) {}
 }
 /* --- END OF AD CONFIGURATION --- */
 var examples=[
@@ -279,7 +228,7 @@ function doDl(){
       if(!b)return;
       if(dlCap){dlCap.save({filename:"whatsapp-chat.jpg",data:b}).catch(function(e){if(!e||e.code!=="declined")showImg(c)})}
       else{try{var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="whatsapp-chat.jpg";document.body.appendChild(a);a.click();a.remove()}catch(e){showImg(c)}}
-        },"image/jpeg",0.95);
+    },"image/jpeg",0.95);
 
     // --- NEW: Trigger Ad Overlay if due ---
     if (isAdDue()) {
@@ -301,53 +250,6 @@ Array.prototype.forEach.call(tb,function(b,i){b.onclick=function(){go(i)}});
 $("back").onclick=function(){go(0)};
 $("next").onclick=function(){if(cur===2)doDl();else go(2)};
 drawList();drawShot();
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('sw.js');
-    });
-  }
-
-/* --- PWA INSTALL BUTTON LOGIC --- */
-var deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', function(e) {
-  // Prevent the default mini-infobar from appearing on mobile
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-  
-  // Show our custom install button (only if not already installed)
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    // Already installed, do nothing
-  } else {
-    document.getElementById('pwaBox').style.display = 'block';
-  }
-});
-
-document.getElementById('installBtn').addEventListener('click', function() {
-  if (deferredPrompt) {
-    // Show the native install prompt
-    deferredPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then(function(choiceResult) {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-        document.getElementById('pwaBox').style.display = 'none';
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      deferredPrompt = null;
-    });
-  }
-});
-
-// Hide button if app is launched from home screen
-window.addEventListener('appinstalled', function() {
-  document.getElementById('pwaBox').style.display = 'none';
-});
 </script>
 </body>
 </html>
